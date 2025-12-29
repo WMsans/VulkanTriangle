@@ -10,6 +10,9 @@ public:
     TriangleWindow (int w, int h, std::string name);
     ~TriangleWindow ();
 
+    TriangleWindow(const TriangleWindow &) = delete;
+    TriangleWindow &operator=(const TriangleWindow &) = delete;
+
     bool shouldClose();
 
   private:
