@@ -1,5 +1,6 @@
 #include "triangle_window.hpp"
 #include <GLFW/glfw3.h>
+#include <stdexcept>
 
 namespace triangle{
 
@@ -21,5 +22,11 @@ void TriangleWindow::initWindow (){
 }
 bool TriangleWindow::shouldClose() {
     return glfwWindowShouldClose(window);
+}
+
+void TriangleWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface){
+    if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS){
+        throw std::runtime_error("Failed to create window: " + windowName);
+    }
 }
 } // namespace triangle
