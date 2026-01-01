@@ -25,6 +25,8 @@ void FirstApp::run() {
         glfwPollEvents();
         drawFrames();
     }
+
+    vkDeviceWaitIdle(triangleDevice.device());
 }
 void FirstApp::createPipelineLayout() {
     VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
