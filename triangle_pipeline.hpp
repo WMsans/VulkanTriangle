@@ -30,6 +30,8 @@ public:
                      const PipelineConfigInfo configInfo);
     ~TrianglePipeline();
 
+    void bind(VkCommandBuffer commandBuffer);
+
     static PipelineConfigInfo defaultPipelineConfigInfo(uint32_t width,
                                                         uint32_t height);
 

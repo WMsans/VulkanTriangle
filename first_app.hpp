@@ -25,8 +25,8 @@ public:
   private:
     void createPipelineLayout();
     void createPipeline();
-    void createCommandBuffers(){}
-    void drawFrames(){}
+    void createCommandBuffers();
+    void drawFrames();
 
     TriangleWindow triangleWindow{WIDTH, HEIGHT, "Hello Vulcan!"};
     TriangleDevice triangleDevice{triangleWindow};

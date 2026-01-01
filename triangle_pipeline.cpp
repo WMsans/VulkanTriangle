@@ -187,4 +187,7 @@ void TrianglePipeline::createShaderModule(const std::vector<char> &code,
         throw std::runtime_error("Failed to create shader module");
     }
 }
+void TrianglePipeline::bind(VkCommandBuffer commandBuffer) {
+    vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
+}
 } // namespace triangle
