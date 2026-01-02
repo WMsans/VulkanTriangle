@@ -1,15 +1,18 @@
 #include "first_app.hpp"
+#include "triangle_model.hpp"
 #include "triangle_pipeline.hpp"
 #include <GLFW/glfw3.h>
 #include <array>
 #include <cstdint>
 #include <memory>
 #include <stdexcept>
+#include <vector>
 #include <vulkan/vulkan_core.h>
 
 namespace triangle {
 
 FirstApp::FirstApp(){
+    loadModels();
     createPipelineLayout();
     createPipeline();
     createCommandBuffers();
@@ -86,7 +89,8 @@ void FirstApp::createCommandBuffers() {
         vkCmdBeginRenderPass(commandBuffers[i], &renderpassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
         trianglePipeline->bind(commandBuffers[i]);
-        vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+        triangleModel->bind(commandBuffers[i]);
+        triangleModel->draw(commandBuffers[i]);
 
         vkCmdEndRenderPass(commandBuffers[i]);
         if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS) {
@@ -107,5 +111,14 @@ void FirstApp::drawFrames() {
     if (result != VK_SUCCESS){
         throw std::runtime_error("failed to acquire swap chain image");
     }
+}
+void FirstApp::loadModels() {
+    std::vector<TriangleModel::Vertex> vertices{
+        {{0.0f, -0.5f}},
+        {{0.5f, 0.5f}},
+        {{-0.5f, 0.5f}}
+    };
+
+    triangleModel = std::make_unique<TriangleModel>(triangleDevice, vertices);
 }
 } // namespace triangle
