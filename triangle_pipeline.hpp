@@ -24,7 +24,7 @@ struct PipelineConfigInfo {
 class TrianglePipeline {
 public:
     TrianglePipeline(const TrianglePipeline &) = delete;
-    void operator=(const TrianglePipeline &) = delete;
+    TrianglePipeline &operator=(const TrianglePipeline &) = delete;
     TrianglePipeline(TriangleDevice &device, const std::string &vertFilepath,
                      const std::string &fragFilepath,
                      const PipelineConfigInfo configInfo);

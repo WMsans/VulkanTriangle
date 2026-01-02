@@ -19,7 +19,7 @@ class TriangleSwapChain {
   ~TriangleSwapChain();
 
   TriangleSwapChain(const TriangleSwapChain &) = delete;
-  void operator=(const TriangleSwapChain &) = delete;
+  TriangleSwapChain &operator=(const TriangleSwapChain &) = delete;
 
   VkFramebuffer getFrameBuffer(int index) { return swapChainFramebuffers[index]; }
   VkRenderPass getRenderPass() { return renderPass; }

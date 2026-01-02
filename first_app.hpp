@@ -29,11 +29,13 @@ public:
     void createPipeline();
     void createCommandBuffers();
     void drawFrames();
+    void recreateSwapChain();
+    void recordCommandBuffer(int imageIndex);
     static std::vector<TriangleModel::Vertex> getSierpinskiVertices(glm::vec2 topPos, float sideLen, int num);
 
     TriangleWindow triangleWindow{WIDTH, HEIGHT, "Hello Vulcan!"};
     TriangleDevice triangleDevice{triangleWindow};
-    TriangleSwapChain triangleSwapChain{triangleDevice, triangleWindow.getExtent()};
+    std::unique_ptr<TriangleSwapChain> triangleSwapChain;
     std::unique_ptr<TrianglePipeline> trianglePipeline;
     VkPipelineLayout pipelineLayout;
     std::vector<VkCommandBuffer> commandBuffers;

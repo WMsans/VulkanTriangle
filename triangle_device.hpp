@@ -35,9 +35,7 @@ class TriangleDevice {
 
   // Not copyable or movable
   TriangleDevice(const TriangleDevice &) = delete;
-  void operator=(const TriangleDevice &) = delete;
-  TriangleDevice(TriangleDevice &&) = delete;
-  TriangleDevice &operator=(TriangleDevice &&) = delete;
+  TriangleDevice &operator=(const TriangleDevice &) = delete;
 
   VkCommandPool getCommandPool() { return commandPool; }
   VkDevice device() { return device_; }
