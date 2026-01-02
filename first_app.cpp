@@ -3,7 +3,9 @@
 #include "triangle_pipeline.hpp"
 #include <GLFW/glfw3.h>
 #include <array>
+#include <cmath>
 #include <cstdint>
+#include <glm/ext/vector_float2.hpp>
 #include <memory>
 #include <stdexcept>
 #include <vector>
@@ -113,12 +115,38 @@ void FirstApp::drawFrames() {
     }
 }
 void FirstApp::loadModels() {
-    std::vector<TriangleModel::Vertex> vertices{
-        {{0.0f, -0.5f}},
-        {{0.5f, 0.5f}},
-        {{-0.5f, 0.5f}}
-    };
+    std::vector<TriangleModel::Vertex> vertices = getSierpinskiVertices(
+        {0.0f, -0.5f},
+        2 / std::sqrt(3),
+        5
+    );
 
     triangleModel = std::make_unique<TriangleModel>(triangleDevice, vertices);
+}
+
+std::vector<TriangleModel::Vertex> FirstApp::getSierpinskiVertices(glm::vec2 topPos, float sideLen, int num){
+    glm::vec2 buttomLeftPos = {topPos.x - sideLen/2, topPos.y + sideLen / 2 * std::sqrt(3.0f)};
+    glm::vec2 buttomRightPos = {topPos.x + sideLen/2, topPos.y + sideLen / 2 * std::sqrt(3.0f)};
+    if (num <= 0){
+        std::vector<TriangleModel::Vertex> result = {
+            {{topPos.x, topPos.y}},
+            {buttomRightPos},
+            {buttomLeftPos},
+        };
+        return result;
+    }
+    auto topTriangle = getSierpinskiVertices(topPos, sideLen / 2, num - 1);
+    auto buttomLeftTriangle = getSierpinskiVertices(
+        (topPos + buttomLeftPos) / 2.0f,
+        sideLen / 2, 
+        num - 1);
+    auto buttomRightTriangle = getSierpinskiVertices((topPos + buttomRightPos) / 2.0f, sideLen / 2, num - 1);
+
+    std::vector<TriangleModel::Vertex> combined;
+    combined.insert(combined.end(), topTriangle.begin(), topTriangle.end());
+    combined.insert(combined.end(), buttomRightTriangle.begin(), buttomRightTriangle.end());
+    combined.insert(combined.end(), buttomLeftTriangle.begin(), buttomLeftTriangle.end());
+
+    return combined;
 }
 } // namespace triangle

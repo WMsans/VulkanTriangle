@@ -29,6 +29,7 @@ public:
     void createPipeline();
     void createCommandBuffers();
     void drawFrames();
+    static std::vector<TriangleModel::Vertex> getSierpinskiVertices(glm::vec2 topPos, float sideLen, int num);
 
     TriangleWindow triangleWindow{WIDTH, HEIGHT, "Hello Vulcan!"};
     TriangleDevice triangleDevice{triangleWindow};
