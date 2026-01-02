@@ -115,12 +115,11 @@ void FirstApp::drawFrames() {
     }
 }
 void FirstApp::loadModels() {
-    std::vector<TriangleModel::Vertex> vertices = getSierpinskiVertices(
-        {0.0f, -0.5f},
-        2 / std::sqrt(3),
-        5
-    );
-
+    std::vector<TriangleModel::Vertex> vertices = {
+        {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+        {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+        {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
+    };
     triangleModel = std::make_unique<TriangleModel>(triangleDevice, vertices);
 }
 
