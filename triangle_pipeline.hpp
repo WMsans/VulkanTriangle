@@ -1,15 +1,20 @@
 #pragma once
 
 #include "triangle_device.hpp"
-#include <cstdint>
+
+// std
 #include <string>
 #include <vector>
-#include <vulkan/vulkan_core.h>
+
 namespace triangle {
 
 struct PipelineConfigInfo {
+  PipelineConfigInfo(const PipelineConfigInfo&) = delete;
+  PipelineConfigInfo& operator=(const PipelineConfigInfo&) = delete;
+
   VkViewport viewport;
   VkRect2D scissor;
+  VkPipelineViewportStateCreateInfo viewportInfo;
   VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
   VkPipelineRasterizationStateCreateInfo rasterizationInfo;
   VkPipelineMultisampleStateCreateInfo multisampleInfo;
@@ -22,32 +27,35 @@ struct PipelineConfigInfo {
 };
 
 class TrianglePipeline {
-public:
-    TrianglePipeline(const TrianglePipeline &) = delete;
-    TrianglePipeline &operator=(const TrianglePipeline &) = delete;
-    TrianglePipeline(TriangleDevice &device, const std::string &vertFilepath,
-                     const std::string &fragFilepath,
-                     const PipelineConfigInfo configInfo);
-    ~TrianglePipeline();
+ public:
+  TrianglePipeline(
+      TriangleDevice& device,
+      const std::string& vertFilepath,
+      const std::string& fragFilepath,
+      const PipelineConfigInfo& configInfo);
+  ~TrianglePipeline();
 
-    void bind(VkCommandBuffer commandBuffer);
+  TrianglePipeline(const TrianglePipeline&) = delete;
+  TrianglePipeline& operator=(const TrianglePipeline&) = delete;
 
-    static PipelineConfigInfo defaultPipelineConfigInfo(uint32_t width,
-                                                        uint32_t height);
+  void bind(VkCommandBuffer commandBuffer);
 
-private:
-    static std::vector<char> readFile(const std::string &filepath);
+  static void defaultPipelineConfigInfo(
+      PipelineConfigInfo& configInfo, uint32_t width, uint32_t height);
 
-    void createGraphicsPipeline(const std::string &vertFilepath,
-                                const std::string &fragFilepath,
-                                const PipelineConfigInfo configInfo);
+ private:
+  static std::vector<char> readFile(const std::string& filepath);
 
-    void createShaderModule(const std::vector<char> &code,
-                            VkShaderModule *shaderModule);
+  void createGraphicsPipeline(
+      const std::string& vertFilepath,
+      const std::string& fragFilepath,
+      const PipelineConfigInfo& configInfo);
 
-    TriangleDevice &triangleDevice;
-    VkPipeline graphicsPipeline;
-    VkShaderModule vertShaderModule;
-    VkShaderModule fragShaderModule;
+  void createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule);
+
+  TriangleDevice& triangleDevice;
+  VkPipeline graphicsPipeline;
+  VkShaderModule vertShaderModule;
+  VkShaderModule fragShaderModule;
 };
-}
+}  // namespace triangle

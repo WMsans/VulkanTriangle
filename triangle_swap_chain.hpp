@@ -6,7 +6,7 @@
 #include <vulkan/vulkan.h>
 
 // std lib headers
-#include <string>
+#include <memory>
 #include <vector>
 
 namespace triangle {
@@ -16,6 +16,8 @@ class TriangleSwapChain {
   static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
 
   TriangleSwapChain(TriangleDevice &deviceRef, VkExtent2D windowExtent);
+  TriangleSwapChain(
+      TriangleDevice &deviceRef, VkExtent2D windowExtent, std::shared_ptr<TriangleSwapChain> previous);
   ~TriangleSwapChain();
 
   TriangleSwapChain(const TriangleSwapChain &) = delete;
@@ -39,6 +41,7 @@ class TriangleSwapChain {
   VkResult submitCommandBuffers(const VkCommandBuffer *buffers, uint32_t *imageIndex);
 
  private:
+  void init();
   void createSwapChain();
   void createImageViews();
   void createDepthResources();
@@ -69,6 +72,7 @@ class TriangleSwapChain {
   VkExtent2D windowExtent;
 
   VkSwapchainKHR swapChain;
+  std::shared_ptr<TriangleSwapChain> oldSwapChain;
 
   std::vector<VkSemaphore> imageAvailableSemaphores;
   std::vector<VkSemaphore> renderFinishedSemaphores;
@@ -77,4 +81,4 @@ class TriangleSwapChain {
   size_t currentFrame = 0;
 };
 
-}  // namespace lve
+}  // namespace triangle

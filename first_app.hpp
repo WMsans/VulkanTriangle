@@ -5,40 +5,40 @@
 #include "triangle_pipeline.hpp"
 #include "triangle_swap_chain.hpp"
 #include "triangle_window.hpp"
+
+// std
 #include <memory>
 #include <vector>
-#include <vulkan/vulkan_core.h>
 
 namespace triangle {
-class FirstApp{
+class FirstApp {
+ public:
+  static constexpr int WIDTH = 800;
+  static constexpr int HEIGHT = 600;
 
-public:
-    static constexpr int WIDTH = 800;
-    static constexpr int HEIGHT = 600;
+  FirstApp();
+  ~FirstApp();
 
-    FirstApp();
-    FirstApp(const FirstApp &) = delete;
-    FirstApp &operator=(const FirstApp &) = delete;
-    ~FirstApp();
+  FirstApp(const FirstApp &) = delete;
+  FirstApp &operator=(const FirstApp &) = delete;
 
-    void run();
+  void run();
 
-  private:
-    void loadModels();
-    void createPipelineLayout();
-    void createPipeline();
-    void createCommandBuffers();
-    void drawFrames();
-    void recreateSwapChain();
-    void recordCommandBuffer(int imageIndex);
-    static std::vector<TriangleModel::Vertex> getSierpinskiVertices(glm::vec2 topPos, float sideLen, int num);
+ private:
+  void loadModels();
+  void createPipelineLayout();
+  void createPipeline();
+  void createCommandBuffers();
+  void drawFrame();
+  void recreateSwapChain();
+  void recordCommandBuffer(int imageIndex);
 
-    TriangleWindow triangleWindow{WIDTH, HEIGHT, "Hello Vulcan!"};
-    TriangleDevice triangleDevice{triangleWindow};
-    std::unique_ptr<TriangleSwapChain> triangleSwapChain;
-    std::unique_ptr<TrianglePipeline> trianglePipeline;
-    VkPipelineLayout pipelineLayout;
-    std::vector<VkCommandBuffer> commandBuffers;
-    std::unique_ptr<TriangleModel> triangleModel;
+  TriangleWindow triangleWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
+  TriangleDevice triangleDevice{triangleWindow};
+  std::unique_ptr<TriangleSwapChain> triangleSwapChain;
+  std::unique_ptr<TriangleModel> triangleModel;
+  std::unique_ptr<TrianglePipeline> trianglePipeline;
+  VkPipelineLayout pipelineLayout;
+  std::vector<VkCommandBuffer> commandBuffers;
 };
-}
+}  // namespace triangle

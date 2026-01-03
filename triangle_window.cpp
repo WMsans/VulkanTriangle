@@ -1,41 +1,40 @@
 #include "triangle_window.hpp"
-#include <GLFW/glfw3.h>
+
+// std
 #include <stdexcept>
 
-namespace triangle{
+namespace triangle {
 
-TriangleWindow::TriangleWindow(int w, int h, std::string name) : width(w), height(h), windowName(name){
-    initWindow();
-}
-
-TriangleWindow::~TriangleWindow(){
-    glfwDestroyWindow(window);
-    glfwTerminate();
+TriangleWindow::TriangleWindow(int w, int h, std::string name) : width{w}, height{h}, windowName{name} {
+  initWindow();
 }
 
-void TriangleWindow::initWindow (){
-    glfwInit();
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-
-    window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
-    glfwSetWindowUserPointer(window, this);
-    glfwSetFramebufferSizeCallback(window, framebufferResizedCallback);
-}
-bool TriangleWindow::shouldClose() {
-    return glfwWindowShouldClose(window);
+TriangleWindow::~TriangleWindow() {
+  glfwDestroyWindow(window);
+  glfwTerminate();
 }
 
-void TriangleWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface){
-    if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS){
-        throw std::runtime_error("Failed to create window: " + windowName);
-    }
+void TriangleWindow::initWindow() {
+  glfwInit();
+  glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+  glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+
+  window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
+  glfwSetWindowUserPointer(window, this);
+  glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
 }
-void TriangleWindow::framebufferResizedCallback(GLFWwindow *window, int width,
-                                                int height) {
-    auto triangleWindow = reinterpret_cast<TriangleWindow *>(glfwGetWindowUserPointer(window));
-    triangleWindow->framebufferResized = true;
-    triangleWindow->width = width;
-    triangleWindow->height = height;
+
+void TriangleWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface) {
+  if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
+    throw std::runtime_error("failed to craete window surface");
+  }
 }
-} // namespace triangle
+
+void TriangleWindow::framebufferResizeCallback(GLFWwindow *window, int width, int height) {
+  auto triangleWindow = reinterpret_cast<TriangleWindow *>(glfwGetWindowUserPointer(window));
+  triangleWindow->framebufferResized = true;
+  triangleWindow->width = width;
+  triangleWindow->height = height;
+}
+
+}  // namespace triangle

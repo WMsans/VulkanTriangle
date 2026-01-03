@@ -36,6 +36,8 @@ class TriangleDevice {
   // Not copyable or movable
   TriangleDevice(const TriangleDevice &) = delete;
   TriangleDevice &operator=(const TriangleDevice &) = delete;
+  TriangleDevice(TriangleDevice &&) = delete;
+  TriangleDevice &operator=(TriangleDevice &&) = delete;
 
   VkCommandPool getCommandPool() { return commandPool; }
   VkDevice device() { return device_; }
@@ -103,4 +105,4 @@ class TriangleDevice {
   const std::vector<const char *> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 };
 
-}  // namespace lve
+}  // namespace triangle
